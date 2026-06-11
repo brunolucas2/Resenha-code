@@ -3,7 +3,7 @@ from time import sleep
 system('cls')
 def init():
     n1 = float(input("Infomre o primeiro número: "))
-    n2 = float(input("Infomre o segundo número: "))
+    n2 = float(input("Informe o segundo número: "))
     result = 0.0
     system('cls')
     while True:
