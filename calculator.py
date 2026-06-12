@@ -8,7 +8,8 @@ def clearConsole():
 def calculator(option, n1, n2):
     package = {
         "operacao": "",
-        "resultado": 0
+        "resultado": 0,
+        "error": ""
     }
     try:
         match option:
@@ -23,19 +24,19 @@ def calculator(option, n1, n2):
             case "5":
                 package["operacao"], package["resultado"] = "resto de divisao", n1 % n2
             case _:
-                print("Essa opção não existe\nPofavor tentar novamente")
-                return "NotExistsThisOption"
+                package["error"] = "NotExistsThisOption"
     except ZeroDivisionError:
-        package["operacao"], package["resultado"] = "erro", "divisao por zero"
+        package["error"] = "ZeroDivision"
     except Exception as e:
-        package["operacao"], package["resultado"] = "erro", str(e)
+        package["error"] = f"internal error\n{str(e)}"
 
     return package
 
 def init():
-    clearConsole()
     while True:
-
+        clearConsole()
+        print("Bem vindo a calculadora da resenha")
+        print("resenhe suas operações aritméticas aqui\n")
         try:
             firstNumber = float(input("Informe o primeiro número: "))
             secondNumber = float(input("Informe o segundo número: "))
@@ -64,12 +65,20 @@ Insira a opção: """)
         else:
             print("Calculando o Resultado .....")
             resultado = calculator(option, firstNumber, secondNumber)
-            if not resultado:
-                print("ERRO interno!\nnão foi possivel realizar a operação")
+            if resultado["error"]:
+                match resultado["error"]:
+                    case "NotExistsThisOption":
+                        print("essa opção não existe\nporfavor selecionar outra opção")
+                    case "ZeroDivision":
+                        print("não e possivel realizar divisão com zero\npofavor não insira o número zero")
+                    case _:
+                        print(f"INTERNAL ERROR\n{resultado["error"]}")
+                
+                sleep(2.5)
+                clearConsole()
+                print("Voltando ao inicio ...")
+                sleep(1.5)
                 continue
-            elif resultado == "NotExistsThisOption":
-                continue
-
         sleep(1)
         clearConsole()
 
